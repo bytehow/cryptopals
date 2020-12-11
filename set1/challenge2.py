@@ -6,14 +6,7 @@ def hex_xor(s1, s2):
     bytes1 = codecs.decode(s1, 'hex')
     bytes2 = codecs.decode(s2, 'hex')
 
-    raw = bytearray()
-    for b1, b2 in zip(bytes1, bytes2):
-    # for b1, b2 in zip(s1, s2):
-        # result = b1 ^ b2
-        raw.append(b1 ^ b2)
-        # print(hex(result))
-        #
-        # print(f'{b1}:{b2}')
+    raw = bytearray([b1 ^ b2 for b1, b2 in zip(bytes1, bytes2)])
     return  codecs.encode(raw, 'hex').decode()
 
 s1 = '1c0111001f010100061a024b53535009181c'
