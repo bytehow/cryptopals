@@ -60,11 +60,11 @@ def encryption_oracle(plaintext):
     return encrypt_aes(plaintext.encode(), key, cbc_mode=cbc_mode)
 
 def detect_mode():
-    # Ensure that at least 4 256 bit blocks are exactly the same
-    # The random noise will ruin alignment for first and last block
-    # but the middle two blocks should still form at least 2 repeated 
+    # Ensure that at least 3 16 byte blocks are exactly the same.
+    # The random noise will ruin alignment for first block
+    # but the remaining blocks should still form at least 3 repeated
     # plaintext blocks
-    plaintext = 'x' * 128
+    plaintext = 'x' * 64
     ciphertext = encryption_oracle(plaintext)
     counter = Counter(consume_bytes(ciphertext, 16))
     dups = {k: v for k,v in counter.items() if v > 1}
