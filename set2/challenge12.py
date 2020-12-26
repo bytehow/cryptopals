@@ -66,7 +66,6 @@ def detect_ecb():
     dups = {k: v for k,v in counter.items() if v >= 4}
 
     if dups:
-        print(dups)
         return True
 
     return False
