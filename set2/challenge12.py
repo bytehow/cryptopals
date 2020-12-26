@@ -31,10 +31,6 @@ def pad(input, block_size):
     array.extend([n] * n)
     return array
 
-def xor(block1, block2):
-    assert len(block1) == len(block2)
-    return bytes([a ^ b for a, b in zip(block1, block2)])
-
 def encrypt_aes(plaintext, key):
     padded = pad(plaintext, 16)
     ciphertext = bytearray()
@@ -110,8 +106,6 @@ def decrypt_secret(block_size):
 
         block_to_compare += 1
 
-    return secret
-
 if __name__ == '__main__':
     is_ecb = detect_ecb()
     print(f'Is AES ECB: {is_ecb}')
@@ -122,4 +116,3 @@ if __name__ == '__main__':
     print('Decrypting secret:')
     print('-' * 50)
     decrypt_secret(block_size)
-    # print(secret.decode())

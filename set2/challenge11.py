@@ -67,7 +67,7 @@ def detect_mode():
     plaintext = 'x' * 64
     ciphertext = encryption_oracle(plaintext)
     counter = Counter(consume_bytes(ciphertext, 16))
-    dups = {k: v for k,v in counter.items() if v > 1}
+    dups = {k: v for k,v in counter.items() if v >= 3}
 
     if dups:
         print('Detected AES ECB')
