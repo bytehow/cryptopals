@@ -63,16 +63,14 @@ def determine_block_size():
             return i
 
 def detect_ecb():
-    # Ensure that at least 3 16 byte blocks are exactly the same.
-    # The random noise will ruin alignment for first block
-    # but the remaining blocks should still form at least 3 repeated 
-    # plaintext blocks
+    # Ensure that at least 4 16 byte blocks are exactly the same.
     plaintext = 'x' * 64
     ciphertext = encryption_oracle(plaintext)
     counter = Counter(consume_bytes(ciphertext, 16))
-    dups = {k: v for k,v in counter.items() if v > 1}
+    dups = {k: v for k,v in counter.items() if v >= 4}
 
     if dups:
+        print(dups)
         return True
 
     return False
