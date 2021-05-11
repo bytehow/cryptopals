@@ -76,6 +76,11 @@ def decrypt_secret(block_size):
     complete = False
     block_to_compare = 0
 
+    # Within each block, cycle through all possible incomlpete blocks.
+    # Each incomplete block length determines how many characters from
+    # the secret string are pulled into the current incomlpete block.
+    # Guess the last character of each incomplete block until all block_size characters
+    # are known at block_to_compare. Then move on to block_to_compare += 1, and start again.
     while not complete:
         for i in range(block_size - 1, -1, -1):
             # Grab the last block_size - 1 chars from secret and pad if not enough chars
@@ -94,16 +99,19 @@ def decrypt_secret(block_size):
             ciphertext = encryption_oracle(padding, encoded=True)
             ciphertext_block = ciphertext[block_start:block_end]
 
-            # If we hit the trailing padding, we're done
+            # If we hit the trailing padding after our rainbow prefix and before appended secret, we're done
+            # This could fail if padding char also exists in secret
             match = rainbow[str(ciphertext_block)]
             if match == 1:
                 complete = True
                 break
             else:
-                print(chr(match), end='')
+                # Print out each character without line buffering
+                print(chr(match), end='', flush=True)
                 secret.append(match)
 
         block_to_compare += 1
+
 
 if __name__ == '__main__':
     is_ecb = detect_ecb()
@@ -115,3 +123,4 @@ if __name__ == '__main__':
     print('Decrypting secret:')
     print('-' * 50)
     decrypt_secret(block_size)
+    print('-' * 50)
